@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
-
 ]
 
 MIDDLEWARE = [
@@ -101,14 +100,14 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
@@ -122,6 +121,8 @@ SPECTACULAR_SETTINGS = {
 
 WSGI_APPLICATION = 'skill-tree.wsgi.application'
 
+
+# AUTH_USER_MODEL = 'main.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
