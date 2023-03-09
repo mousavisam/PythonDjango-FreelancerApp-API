@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from ...serializer.authentication_serializer.sign_up_serializer import UserSignUpRequest, UserSerializer
+from ...serializer.authentication.sign_up_serializer import UserSignUpRequest, UserSerializer
 from ....logic.authentication.sign_up_logic import SignUpLogic
 
 
@@ -15,6 +15,17 @@ class SignUpController(ViewSet):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.sign_up_logic = SignUpLogic()
+
+    @extend_schema(
+        tags=["Auth"],
+
+        responses={200: UserSerializer},
+    )
+    def retrieve(self, request: Request):
+        users = self.sign_up_logic.get_all_users()
+
+        serialized_response = UserSerializer(users, many=True)
+        return Response(data=serialized_response.data, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
         request=UserSignUpRequest,
@@ -40,14 +51,3 @@ class SignUpController(ViewSet):
 
             except Exception as e:
                 return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
-
-    @extend_schema(
-        tags=["Auth"],
-
-        responses={200: UserSerializer},
-    )
-    def retrieve(self, request: Request):
-        users = self.sign_up_logic.get_all_users()
-
-        serialized_response = UserSerializer(users, many=True)
-        return Response(data=serialized_response.data, status=status.HTTP_400_BAD_REQUEST)

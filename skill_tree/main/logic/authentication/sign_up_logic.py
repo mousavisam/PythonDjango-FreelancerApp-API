@@ -8,7 +8,7 @@ class SignUpLogic:
     def get_all_users(self) -> QuerySet:
         return User.objects.all()
 
-    def insert_user(self, **kwargs) -> int:
+    def insert_user(self, **kwargs) -> User:
         password = kwargs.pop('password')
         user = User.objects.create(**kwargs)
         user.set_password(password)

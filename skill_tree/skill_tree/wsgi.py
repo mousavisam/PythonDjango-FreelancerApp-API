@@ -1,5 +1,5 @@
 """
-WSGI config for skill-tree project.
+WSGI config for skill_tree project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'skill-tree.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'skill_tree.settings')
 
 application = get_wsgi_application()
