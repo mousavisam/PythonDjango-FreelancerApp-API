@@ -3,6 +3,7 @@ from typing import Tuple
 from django.db.models import QuerySet
 
 from main.logic.dao.category.category_dao import CategoryDao
+from main.model.category_entity import Category
 from main.model.vo.category.category_vo import CategoryVO
 
 
@@ -20,3 +21,6 @@ class CategoryLogic:
                 response[category.title].append({CategoryVO.title: item.title, CategoryVO.description: item.description})
                 return response
         return category
+
+    def get_category_by_title(self, title: str) -> Category:
+        return self.dao.get_category_by_title(title)

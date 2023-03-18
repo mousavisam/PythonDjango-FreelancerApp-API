@@ -12,5 +12,8 @@ class LoginLogic:
             if user.check_password(password):
                 access_token, refresh_token = self.user_logic.create_refresh_token(user)
                 return {'access_token': str(access_token), 'refresh_token': str(refresh_token)}
+            else:
+                raise ValueError("Password is incorrect")
+            # ValueError display with 500 status code
         else:
-            raise ValueError("Password is incorrect")
+            raise ValueError("User Does Not Exist!")

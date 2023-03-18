@@ -2,5 +2,6 @@ from django.db import models
 
 
 class LevelType(models.TextChoices):
-    BASIC = "BASIC"
-    INTERMEDIATE = "INTERMEDIATE"
+    JUNIOR = "JUNIOR"
+    MID_LEVEL = "MID_LEVEL"
+    SENIOR = "SENIOR"
