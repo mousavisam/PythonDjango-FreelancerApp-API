@@ -24,10 +24,10 @@ class SkillTreeUtils:
 
     @staticmethod
     def get_certificate_user_file_path(user, filename: str):
-        return 'upload/users/{0}/certificates/{1}'.format(user.id, filename)
+        return '{0}/certificates/{1}'.format(user.id, filename)
 
     @staticmethod
     def get_profile_user_file_path(user, filename: str):
-        return 'upload/users/{0}/profile/{1}'.format(user.id, filename)
+        return '{0}/profile/{1}'.format(user.id, filename)
 
 
