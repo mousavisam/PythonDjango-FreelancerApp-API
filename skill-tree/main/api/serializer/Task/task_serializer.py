@@ -4,11 +4,15 @@ from main.model.task_entity import Task
 
 
 class CreateTaskSerializer(serializers.ModelSerializer):
-    service_category = serializers.SerializerMethodField()
+    service_category = serializers.CharField(max_length=150)
 
     class Meta:
         model = Task
-        fields = ['title', 'deliver_time', 'status', 'description']
+        fields = ['title', 'deliver_time', 'description', 'service_category']
 
-    def get_service_category(self):
-        return
+
+class TaskAttachmentFile(serializers.Serializer):
+    task_id = serializers.IntegerField(min_value=1)
+    attachment_file = serializers.FileField()
+
+

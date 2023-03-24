@@ -30,4 +30,6 @@ class SkillTreeUtils:
     def get_profile_user_file_path(user, filename: str):
         return '{0}/profile/{1}'.format(user.id, filename)
 
-
+    @staticmethod
+    def get_task_attachments_file_path(task, filename: str):
+        return '{0}/task/{1}/{2}'.format(task.client.id, task.id, filename)
