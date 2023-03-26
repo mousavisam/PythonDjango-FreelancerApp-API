@@ -9,6 +9,7 @@ from rest_framework.permissions import AllowAny
 
 from ...serializer.Registration.register_serializer import UserSerializer, UserRegisterSerializer
 from ....logic.register.register_logic import RegisterLogic
+from ....shared.based_response.common_response import ErrorResponse
 
 
 class RegisterController(ViewSet):
@@ -50,3 +51,6 @@ class RegisterController(ViewSet):
 
             except Exception as e:
                 return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)

@@ -5,9 +5,9 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
 
-from main.api.serializer.proposal.proposal_serializer import CreateProposalSerializer
-from main.logic.proposal.proposal_logic import ProposalLogic
-from main.shared.based_response.common_response import CreateResponse, ErrorResponse
+from ....api.serializer.proposal.proposal_serializer import CreateProposalSerializer, GetProposalSerializer
+from ....logic.proposal.proposal_logic import ProposalLogic
+from ....shared.based_response.common_response import CreateResponse, ErrorResponse
 
 
 class ProposalController(ViewSet):
@@ -32,7 +32,7 @@ class ProposalController(ViewSet):
             try:
                 self.proposal_logic.create_proposal(delivery_time_in_day=delivery_time_in_day,
                                                     payment_amount=payment_amount,
-                                                    description=description, task_id=task_id, freelancer=request.user)
+                                                    description=description, task_id=task_id, user=request.user,)
 
                 return CreateResponse()
 
@@ -41,3 +41,16 @@ class ProposalController(ViewSet):
 
         else:
             ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        tags=['proposal'],
+        responses={200: GetProposalSerializer},
+    )
+    def get(self, request:Request):
+        user_proposals = self.proposal_logic.get_user_proposals(request.user)
+        serializer = GetProposalSerializer(user_proposals)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+

@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import re
 
 from rest_framework import serializers
@@ -21,6 +21,12 @@ class SkillTreeUtils:
     @staticmethod
     def convert_datetime_to_str(datetime_obj: datetime) -> str:
         return datetime_obj.strftime("%Y/%m/%dT%H:%M:%S")
+
+
+    @staticmethod
+    def convert_str_to_datetime(datetime_str: str) -> datetime:
+        return datetime.strptime(datetime_str, '%m-%d-%YT%H:%M:%S')
+
 
     @staticmethod
     def get_certificate_user_file_path(user, filename: str):

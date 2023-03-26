@@ -1,7 +1,11 @@
-from main.enum.user_status import UserType
-from main.logic.dao.proposal.proposal_dao import ProposalDao
-from main.logic.task.task_logic import TaskLogic
+from typing import Union
+from django.db.models import QuerySet
+
+from ...enum.user_status import UserType
+from ...logic.dao.proposal.proposal_dao import ProposalDao
+from ...logic.task.task_logic import TaskLogic
 from django.core.exceptions import ObjectDoesNotExist
+from ...model.user_entity import User
 
 
 class ProposalLogic:
@@ -17,9 +21,11 @@ class ProposalLogic:
                 kwargs['task_id'] = task.id
                 self.dao.create_proposal(**kwargs)
 
-
             else:
                 raise ObjectDoesNotExist
 
         else:
             raise ValueError("User must be Freelancer")
+
+    def get_user_proposals(self, user: User) -> Union[QuerySet, list]:
+        return self.dao.get_user_proposals(user)
