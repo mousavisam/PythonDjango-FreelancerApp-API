@@ -3,7 +3,7 @@ from django.db.models import QuerySet
 from ....model.proposal_entity import Proposal
 from ....model.user_entity import User
 from ....enum.user_status import UserType
-
+from ....enum.proposal_status import ProposalStatus
 
 class ProposalDao:
 
@@ -19,3 +19,9 @@ class ProposalDao:
 
         else:
             return list()
+
+    def update_proposal_status(self, proposal_id: int, status: ProposalStatus) -> None:
+        proposal = Proposal.objects.filter(id=proposal_id).first()
+        proposal.status = status
+        proposal.save()
+

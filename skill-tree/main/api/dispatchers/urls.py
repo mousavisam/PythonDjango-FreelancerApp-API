@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-
 urlpatterns = [
     path('auth/', include('main.api.dispatchers.registration.register_dispatcher')),
     path('category/', include('main.api.dispatchers.category.category_dispatcher')),
@@ -9,4 +8,6 @@ urlpatterns = [
     path('task/', include('main.api.dispatchers.task.task_dispatcher')),
     path('proposal/', include('main.api.dispatchers.proposal.proposal_dispatcher')),
     path('contract/', include('main.api.dispatchers.contract.contract_dispatcher')),
+    path('certificate/', include('main.api.dispatchers.certificate.certificate_dispatcher')),
+    path('rate/', include('main.api.dispatchers.rate.rate_dispatcher')),
 ]

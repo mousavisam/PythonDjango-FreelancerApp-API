@@ -1,4 +1,4 @@
-from main.model.task_entity import Task
+from ....model.task_entity import Task
 
 
 class TaskDao:

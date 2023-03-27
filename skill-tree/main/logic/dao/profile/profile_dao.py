@@ -1,7 +1,7 @@
 import os
 
-from main.model.profile_entity import Profile
-from main.model.user_entity import User
+from ....model.profile_entity import Profile
+from ....model.user_entity import User
 
 
 class ProfileDao:
@@ -16,6 +16,9 @@ class ProfileDao:
         profile = Profile.objects.filter(user=user).first()
         profile.personal_image = profile_image
         profile.save()
+
+    def get_profile_by_user(self, user) -> Profile:
+        return Profile.objects.filter(user=user).first()
 
 
 

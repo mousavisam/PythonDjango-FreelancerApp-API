@@ -3,10 +3,10 @@ from rest_framework.request import Request
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
 
-from main.api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile
-from main.logic.task.task_logic import TaskLogic
-from main.model.vo.task.task_vo import TaskVO
-from main.shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
+from ....api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile
+from ....logic.task.task_logic import TaskLogic
+from ....model.vo.task.task_vo import TaskVO
+from ....shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
 
 
 class TaskController(ViewSet):

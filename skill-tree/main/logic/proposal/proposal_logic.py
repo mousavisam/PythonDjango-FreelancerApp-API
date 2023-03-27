@@ -6,6 +6,7 @@ from ...logic.dao.proposal.proposal_dao import ProposalDao
 from ...logic.task.task_logic import TaskLogic
 from django.core.exceptions import ObjectDoesNotExist
 from ...model.user_entity import User
+from ...enum.proposal_status import ProposalStatus
 
 
 class ProposalLogic:
@@ -29,3 +30,10 @@ class ProposalLogic:
 
     def get_user_proposals(self, user: User) -> Union[QuerySet, list]:
         return self.dao.get_user_proposals(user)
+
+    def update_proposal_status(self, proposal_id: int, status: ProposalStatus, user: User) -> None:
+        if user.type == UserType.CLIENT:
+            self.dao.update_proposal_status(proposal_id=proposal_id, status=status)
+
+        else:
+            raise ValueError("Freelancers cannot update proposals")

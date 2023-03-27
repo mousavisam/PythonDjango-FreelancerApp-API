@@ -18,3 +18,6 @@ class SkillLogic:
             self.dao.create_skill(category=category, level=level, user=user)
         else:
             raise ObjectDoesNotExist
+
+    def get_user_skill(self, user: User):
+        return self.dao.get_user_skill(user=user)

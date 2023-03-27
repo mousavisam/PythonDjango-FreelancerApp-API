@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from main.enum.contract_status import ContractStatus
 from main.model.contract_entity import Contract
 
 
@@ -19,3 +20,8 @@ class GetContractSerializer(serializers.ModelSerializer):
 
     def get_proposal(self, obj):
         return obj.proposal.task.title
+
+
+class UpdateContractSerializer(serializers.Serializer):
+    contract_id = serializers.IntegerField(min_value=1)
+    status = serializers.ChoiceField(choices=ContractStatus.choices)

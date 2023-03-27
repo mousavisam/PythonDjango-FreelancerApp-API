@@ -2,9 +2,9 @@ from typing import Tuple
 
 from django.db.models import QuerySet
 
-from main.logic.dao.category.category_dao import CategoryDao
-from main.model.category_entity import Category
-from main.model.vo.category.category_vo import CategoryVO
+from ...logic.dao.category.category_dao import CategoryDao
+from ...model.category_entity import Category
+from ...model.vo.category.category_vo import CategoryVO
 
 
 class CategoryLogic:

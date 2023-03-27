@@ -5,9 +5,10 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
 
-from ....api.serializer.proposal.proposal_serializer import CreateProposalSerializer, GetProposalSerializer
+from ....api.serializer.proposal.proposal_serializer import CreateProposalSerializer, GetProposalSerializer, \
+    UpdateProposalSerializer
 from ....logic.proposal.proposal_logic import ProposalLogic
-from ....shared.based_response.common_response import CreateResponse, ErrorResponse
+from ....shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
 
 
 class ProposalController(ViewSet):
@@ -32,7 +33,7 @@ class ProposalController(ViewSet):
             try:
                 self.proposal_logic.create_proposal(delivery_time_in_day=delivery_time_in_day,
                                                     payment_amount=payment_amount,
-                                                    description=description, task_id=task_id, user=request.user,)
+                                                    description=description, task_id=task_id, freelancer=request.user,)
 
                 return CreateResponse()
 
@@ -46,11 +47,34 @@ class ProposalController(ViewSet):
         tags=['proposal'],
         responses={200: GetProposalSerializer},
     )
-    def get(self, request:Request):
-        user_proposals = self.proposal_logic.get_user_proposals(request.user)
-        serializer = GetProposalSerializer(user_proposals)
+    def get(self, request: Request):
+        user_proposals = self.proposal_logic.get_user_proposals(user=request.user)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = GetProposalSerializer(user_proposals, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        parameters=[UpdateProposalSerializer],
+        tags=['proposal'],
+        responses={202: None},
+    )
+    def patch(self, request: Request):
+        serializer = UpdateProposalSerializer(data=request.query_params)
+        if serializer.is_valid():
+            proposal_id = serializer.validated_data.get("proposal_id", None)
+            proposal_status = serializer.validated_data.get("status", None)
+            try:
+                self.proposal_logic.update_proposal_status(proposal_id=proposal_id, status=proposal_status, user=request.user)
+
+                return UpdateResponse()
+
+            except Exception as e:
+                return Response(data=str(e), status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        else:
+            return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
+
 
 
 

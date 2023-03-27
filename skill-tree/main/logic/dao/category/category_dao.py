@@ -19,4 +19,4 @@ class CategoryDao:
             raise ValueError("Object Does Not Exist")
 
     def get_category_by_title(self, title: str) -> Category:
-        return Category.objects.filter(title__contains=title).first()
+        return Category.objects.filter(title__icontains=title).first()

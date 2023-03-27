@@ -1,3 +1,5 @@
+from typing import Dict
+
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -5,7 +7,9 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
 
-from main.api.serializer.Profile.profile_serializer import UpdateProfileSerializer, ImageSerializer
+from main.api.serializer.Profile.profile_serializer import UpdateProfileSerializer, ImageSerializer, \
+    GetProfileSerializer
+from main.api.serializer.Skill.skill_serializer import GetSkillSerializer
 from main.logic.profile.profile_logic import ProfileLogic
 from main.shared.based_response.common_response import UpdateResponse
 
@@ -60,3 +64,26 @@ class ProfileController(ViewSet):
 
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        tags=['profile'],
+        responses={200: Dict},
+    )
+    def get(self, request: Request):
+        profile, rate, skill = self.profile_logic.prepare_user_profile(user=request.user)
+        profile_serializer = GetProfileSerializer(profile)
+        skill_serializer = GetSkillSerializer(skill, many=True)
+        profile_data = profile_serializer.data
+        if skill_serializer.data:
+            profile_data['skill'] = list()
+            for skill in skill_serializer.data:
+                profile_data['skill'].append(dict(skill))
+
+        profile_data.update(rate)
+
+        return Response(profile_data, status=status.HTTP_200_OK)
+
+
+
+
+        

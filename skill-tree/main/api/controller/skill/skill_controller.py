@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from django.core.exceptions import ObjectDoesNotExist
-from main.api.serializer.Skill.skill_serializer import CreateSkillSerializer
-from main.logic.skill.skill_logic import SkillLogic
+from ....api.serializer.Skill.skill_serializer import CreateSkillSerializer
+from ....logic.skill.skill_logic import SkillLogic
 from drf_spectacular.utils import extend_schema
 
 

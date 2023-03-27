@@ -1,5 +1,7 @@
 from typing import Union
 from django.db.models import QuerySet
+
+from main.enum.contract_status import ContractStatus
 from main.enum.user_status import UserType
 from main.model.contract_entity import Contract
 from main.model.user_entity import User
@@ -17,3 +19,8 @@ class ContractDao:
             return Contract.objects.filter(proposal__freelancer=user).order_by('-creation_time')
         else:
             return list()
+
+    def update_contract_status(self, contract_id: int, status: ContractStatus):
+        contract = Contract.objects.filter(id=contract_id).first()
+        contract.status = status
+        contract.save()
