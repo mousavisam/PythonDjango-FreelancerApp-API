@@ -9,5 +9,5 @@ protobuf==4.22.0
 pillow==9.4.0
 psycopg2-binary==2.9.5
 django-environ==0.10.0
-drf_social_oauth2==1.2.2
-python-decouple==3.8
+gunicorn==20.1.0
+django-allauth==0.53.1
