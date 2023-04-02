@@ -6,7 +6,7 @@ from rest_framework import status
 from drf_spectacular.utils import extend_schema
 
 from ....api.serializer.Contract.contract_serializer import ContractSerializer, GetContractSerializer, \
-    UpdateContractSerializer
+    UpdateContractSerializer, MakeContractDoneSerializer
 from ....logic.contract.contract_logic import ContractLogic
 from ....shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
 
@@ -71,3 +71,27 @@ class ContractController(ViewSet):
 
         else:
             return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        request=MakeContractDoneSerializer,
+        tags=['Contract'],
+        responses={202: None},
+    )
+    def make_contract_done(self, request: Request):
+        serializer = MakeContractDoneSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                id = serializer.validated_data.get("id", None)
+                client_message = serializer.validated_data.get("client_message", None)
+                is_done = serializer.validated_data.get("is_done", None)
+                self.contract_logic.make_contract_done(is_done=is_done, client_message=client_message, contract_id=id,
+                                                       user=request.user)
+
+                return UpdateResponse()
+
+            except Exception as e:
+                return Response(data=str(e), status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
+
+

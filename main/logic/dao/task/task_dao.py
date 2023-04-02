@@ -1,5 +1,6 @@
 from ....enum.task_status import TaskStatus
 from ....model.task_entity import Task
+from ....model.user_entity import User
 
 
 class TaskDao:
@@ -16,6 +17,10 @@ class TaskDao:
 
     def update_task_status(self, task: Task, task_status: TaskStatus) -> None:
         task.status = task_status
+        task.save()
+
+    def set_freelancer_for_task(self, user: User, task: Task) -> None:
+        task.assigned_to = user
         task.save()
 
 

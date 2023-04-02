@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from main.enum.task_status import TaskStatus
 from main.model.task_entity import Task
 
 
@@ -16,3 +17,5 @@ class TaskAttachmentFile(serializers.Serializer):
     attachment_file = serializers.FileField()
 
 
+class UpdateTaskSerializer(serializers.Serializer):
+    task_id = serializers.IntegerField(min_value=1)
