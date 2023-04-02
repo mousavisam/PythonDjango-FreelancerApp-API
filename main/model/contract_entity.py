@@ -13,3 +13,5 @@ class Contract(models.Model):
     creation_time = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField(auto_now=False)
     end_time = models.DateTimeField(auto_now=False)
+    is_done = models.BooleanField(default=False)
+    client_message = models.TextField(blank=True, null=True)

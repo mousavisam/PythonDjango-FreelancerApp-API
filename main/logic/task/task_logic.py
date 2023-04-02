@@ -1,9 +1,12 @@
+from typing import Union, Optional
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from main.enum.task_status import TaskStatus
 from main.logic.category.category_logic import CategoryLogic
 from main.logic.dao.task.task_dao import TaskDao
 from main.model.task_entity import Task
+from main.model.user_entity import User
 
 
 class TaskLogic:
@@ -32,4 +35,15 @@ class TaskLogic:
 
     def update_task_status(self, task_status: TaskStatus, task: Task) -> None:
         self.dao.update_task_status(task_status=task_status, task=task)
+
+    def make_task_done(self, task_id: int, user) -> None:
+        task = self.get_task_by_id(task_id)
+        if task.assigned_to == user:
+            self.update_task_status(task_status=TaskStatus.DONE, task=task)
+
+        else:
+            raise ValueError("This Task Does Not Belong to This User!")
+
+    def set_freelancer_for_task(self, user: User, task: Task):
+        self.dao.set_freelancer_for_task(user=user, task=task)
 

@@ -25,3 +25,12 @@ class GetContractSerializer(serializers.ModelSerializer):
 class UpdateContractSerializer(serializers.Serializer):
     contract_id = serializers.IntegerField(min_value=1)
     status = serializers.ChoiceField(choices=ContractStatus.choices)
+
+
+class MakeContractDoneSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(min_value=1)
+    client_message = serializers.CharField(max_length=500, required=False, allow_blank=True)
+
+    class Meta:
+        model = Contract
+        fields = ['client_message', 'is_done', 'id']

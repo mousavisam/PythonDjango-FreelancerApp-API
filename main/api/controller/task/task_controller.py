@@ -1,9 +1,10 @@
+from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
 
-from ....api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile
+from ....api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile, UpdateTaskSerializer
 from ....logic.task.task_logic import TaskLogic
 from ....model.vo.task.task_vo import TaskVO
 from ....shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
@@ -67,7 +68,25 @@ class TaskController(ViewSet):
         else:
             return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
 
-    # def patch(self, request: Request):
-    #     serializer = UpdateTaskSeri
+    @extend_schema(
+        parameters=[UpdateTaskSerializer],
+        tags=['Task'],
+        responses={202: str},
+    )
+    def patch(self, request: Request):
+        serializer = UpdateTaskSerializer(data=request.query_params)
+        if serializer.is_valid():
+            task_id = serializer.validated_data.get('task_id')
+            try:
+                self.task_logic.make_task_done(task_id=task_id, user=request.user)
+
+                return UpdateResponse()
+
+            except Exception as e:
+
+                return Response(data=str(e), status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        else:
+            return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
 
 
