@@ -21,3 +21,9 @@ class CategoryResponseSerializer(serializers.ModelSerializer):
         else:
             return ''
 
+
+class CategoryAsTaskTag(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['title']
+

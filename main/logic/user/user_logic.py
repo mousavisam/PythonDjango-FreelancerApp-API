@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from ..dao.user.user_dao import UserDao
@@ -14,6 +15,9 @@ class UserLogic:
 
     def get_user_by_username(self, username: str) -> User:
         return User.objects.filter(username=username).first()
+
+    def search_user_by_username(self, username: str) -> QuerySet:
+        return self.dao.search_user_by_username(username=username)
 
     def create_refresh_token(self, user: User):
         refresh_token = RefreshToken.for_user(user)
