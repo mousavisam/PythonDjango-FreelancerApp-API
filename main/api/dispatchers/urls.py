@@ -12,4 +12,5 @@ urlpatterns = [
     path('rate/', include('main.api.dispatchers.rate.rate_dispatcher')),
     path('faq/', include('main.api.dispatchers.faq.faq_dispatcher')),
     path('search/', include('main.api.dispatchers.browse.browse_dispatcher')),
+    path('invite/', include('main.api.dispatchers.invite.invite_dispatcher')),
 ]

@@ -29,4 +29,5 @@ class UserRegisterSerializer(serializers.Serializer):
     last_name = serializers.CharField(required=False, max_length=150)
     email = serializers.EmailField(required=False, max_length=150)
     type = serializers.ChoiceField(choices=UserType.choices, required=False)
+    referrer = serializers.CharField(max_length=100, required=False)
 

@@ -5,7 +5,7 @@ from rest_framework import status
 from drf_spectacular.utils import extend_schema
 
 from ....api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile, UpdateTaskSerializer, \
-    GetTaskSerializer
+    GetTaskSerializer, GetRelatedTaskSerializer
 from ....logic.task.task_logic import TaskLogic
 from ....model.vo.task.task_vo import TaskVO
 from ....shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
@@ -30,10 +30,11 @@ class TaskController(ViewSet):
             description = serializer.validated_data.get(TaskVO.description, None)
             tags = serializer.validated_data.get('tags', None)
             try:
-                self.task_logic.insert_task(title=title, deliver_time=deliver_time, description=description,
+                related_task = self.task_logic.insert_task(title=title, deliver_time=deliver_time, description=description,
                                             tags=tags, client=request.user)
+                related_task_serializer = GetRelatedTaskSerializer(related_task, many=True)
 
-                return CreateResponse()
+                return Response(data=related_task_serializer.data, status=status.HTTP_201_CREATED)
             except Exception:
                 return ErrorResponse(message="Category Does Not Exist!", status_code=status.HTTP_406_NOT_ACCEPTABLE)
 

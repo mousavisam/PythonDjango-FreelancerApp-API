@@ -28,6 +28,29 @@ class GetTaskSerializer(serializers.ModelSerializer):
         return CategoryAsTaskTag(obj.tags.all(), many=True).data
 
 
+class GetRelatedTaskSerializer(serializers.ModelSerializer):
+    client = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    assigned_to = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Task
+        fields = ['title', 'deliver_time', 'status', 'client', 'description', 'attachments', 'creation_time',
+                  'description', 'tags', 'assigned_to']
+
+    def get_client(self, obj):
+        return obj.client.username
+
+    def get_assigned_to(self, obj):
+        if obj.assigned_to:
+            return obj.assigned_to.username
+        else:
+            return ''
+
+    def get_tags(self, obj):
+        return CategoryAsTaskTag(obj.tags.all(), many=True).data
+
+
 class TaskAttachmentFile(serializers.Serializer):
     task_id = serializers.IntegerField(min_value=1)
     attachment_file = serializers.FileField()
