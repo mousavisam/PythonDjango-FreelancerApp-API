@@ -4,7 +4,8 @@ from rest_framework.request import Request
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
 
-from ....api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile, UpdateTaskSerializer
+from ....api.serializer.Task.task_serializer import CreateTaskSerializer, TaskAttachmentFile, UpdateTaskSerializer, \
+    GetTaskSerializer
 from ....logic.task.task_logic import TaskLogic
 from ....model.vo.task.task_vo import TaskVO
 from ....shared.based_response.common_response import CreateResponse, ErrorResponse, UpdateResponse
@@ -27,10 +28,10 @@ class TaskController(ViewSet):
             title = serializer.validated_data.get(TaskVO.title, None)
             deliver_time = serializer.validated_data.get(TaskVO.deliver_time, None)
             description = serializer.validated_data.get(TaskVO.description, None)
-            service_category = serializer.validated_data.get(TaskVO.service_category, None)
+            tags = serializer.validated_data.get('tags', None)
             try:
                 self.task_logic.insert_task(title=title, deliver_time=deliver_time, description=description,
-                                            service_category=service_category, client=request.user)
+                                            tags=tags, client=request.user)
 
                 return CreateResponse()
             except Exception:
@@ -88,5 +89,14 @@ class TaskController(ViewSet):
 
         else:
             return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        tags=['Task'],
+        responses={200: GetTaskSerializer},
+    )
+    def get_tasks_related_to_user_skills(self, request: Request):
+        tasks = self.task_logic.get_tasks_related_to_user_skills(user=request.user)
+        serialized_response = GetTaskSerializer(tasks, many=True)
+        return Response(serialized_response.data, status=status.HTTP_200_OK)
 
 

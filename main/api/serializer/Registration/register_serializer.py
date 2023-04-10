@@ -12,6 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'first_name', 'last_name', 'type']
 
 
+class SearchUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
+
+
 class UpdateUserTypeSerializer(serializers.Serializer):
     user_type = serializers.ChoiceField(choices=UserType.choices)
 

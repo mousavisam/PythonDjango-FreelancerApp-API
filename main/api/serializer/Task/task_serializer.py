@@ -1,15 +1,31 @@
 from rest_framework import serializers
 
-from main.enum.task_status import TaskStatus
+from main.api.serializer.Category.category_serializer import CategoryAsTaskTag
 from main.model.task_entity import Task
 
 
 class CreateTaskSerializer(serializers.ModelSerializer):
-    service_category = serializers.CharField(max_length=150)
+    tags = serializers.ListField()
 
     class Meta:
         model = Task
-        fields = ['title', 'deliver_time', 'description', 'service_category']
+        fields = ['title', 'deliver_time', 'description', 'tags']
+
+
+class GetTaskSerializer(serializers.ModelSerializer):
+    client = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Task
+        fields = ['title', 'deliver_time', 'status', 'client', 'description', 'attachments', 'creation_time',
+                  'description', 'tags']
+
+    def get_client(self, obj):
+        return obj.client.username
+
+    def get_tags(self, obj):
+        return CategoryAsTaskTag(obj.tags.all(), many=True).data
 
 
 class TaskAttachmentFile(serializers.Serializer):
@@ -19,3 +35,9 @@ class TaskAttachmentFile(serializers.Serializer):
 
 class UpdateTaskSerializer(serializers.Serializer):
     task_id = serializers.IntegerField(min_value=1)
+
+
+class SearchTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['title']
