@@ -47,28 +47,33 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
     'corsheaders',
     # google authentication
-    'django.contrib.sites', # must
-    'allauth', # must
-    'allauth.account', # must
-    'allauth.socialaccount', # must
-    'allauth.socialaccount.providers.google', # new
+    'django.contrib.sites',  # must
+    'allauth',  # must
+    'allauth.account',  # must
+    'allauth.socialaccount',  # must
+    'allauth.socialaccount.providers.google',  # new
+    'channels',
 ]
-
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -148,11 +153,22 @@ SPECTACULAR_SETTINGS = {
 }
 
 WSGI_APPLICATION = 'skill-tree.wsgi.application'
+ASGI_APPLICATION = "skill-tree.asgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 AUTH_USER_MODEL = 'main.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+AUTHENTICATION_BACKENDS = [
+    'main.auth.UserSessionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 DATABASES = {
     'default': {
@@ -226,7 +242,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = str(BASE_DIR) + '/upload/users'
 MEDIA_URL = '/upload/users/'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

@@ -10,6 +10,8 @@ from .model.user_entity import User
 from .model.skill_entity import Skill
 from .model.certificate_entity import Certificate
 from .model.test_entity import Test
+from .model.user_session import UserSession
+
 
 
 

@@ -32,14 +32,18 @@ class GetRelatedTaskSerializer(serializers.ModelSerializer):
     client = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
     assigned_to = serializers.SerializerMethodField()
+    id = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
         fields = ['title', 'deliver_time', 'status', 'client', 'description', 'attachments', 'creation_time',
-                  'description', 'tags', 'assigned_to']
+                  'description', 'tags', 'assigned_to', 'id']
 
     def get_client(self, obj):
         return obj.client.username
+
+    def get_id(self, obj):
+        return obj.id
 
     def get_assigned_to(self, obj):
         if obj.assigned_to:
