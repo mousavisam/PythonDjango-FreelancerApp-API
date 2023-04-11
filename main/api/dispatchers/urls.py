@@ -13,4 +13,5 @@ urlpatterns = [
     path('faq/', include('main.api.dispatchers.faq.faq_dispatcher')),
     path('search/', include('main.api.dispatchers.browse.browse_dispatcher')),
     path('invite/', include('main.api.dispatchers.invite.invite_dispatcher')),
+    path('report/', include('main.api.dispatchers.report.report_dispatcher')),
 ]

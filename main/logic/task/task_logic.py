@@ -69,3 +69,9 @@ class TaskLogic:
                     set_of_tasks.add(task)
 
         return set_of_tasks
+
+    def get_all_tasks_by_client(self, client):
+        return self.dao.get_all_tasks_by_client(client=client)
+
+    def get_all_tasks_by_freelancer(self, freelancer):
+        return self.dao.get_all_tasks_by_freelancer(freelancer=freelancer)

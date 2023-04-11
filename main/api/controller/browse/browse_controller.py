@@ -30,7 +30,7 @@ class BrowseController(ViewSet):
             users, tasks = self.search_logic.search_by_keyword(keyword=keyword)
             user_serializer = SearchUserSerializer(users, many=True)
             task_serializer = SearchTaskSerializer(tasks, many=True)
-            response = [user_serializer.data, task_serializer.data]
+            response = {'users': user_serializer.data, 'tasks': task_serializer.data}
             return Response(data=response, status=status.HTTP_200_OK)
 
         else:

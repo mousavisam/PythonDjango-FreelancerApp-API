@@ -8,7 +8,7 @@ from .model.rate_entity import Rate
 from .model.skill_entity import Skill
 from .model.task_entity import Task
 from .model.user_entity import User
-
+from .model.user_session import UserSession
 
 admin.site.register(User)
 admin.site.register(Category)
@@ -18,5 +18,6 @@ admin.site.register(Proposal)
 admin.site.register(Rate)
 admin.site.register(Task)
 admin.site.register(Contract)
+admin.site.register(UserSession)
 
 

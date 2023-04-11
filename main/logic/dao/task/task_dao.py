@@ -32,7 +32,7 @@ class TaskDao:
         task.save()
 
     def get_task_by_tag(self, tag: str) -> QuerySet:
-        return Task.objects.filter(tags__title__icontains=tag)
+        return Task.objects.filter(tags__title__icontains=tag).distinct()
 
     def get_task_by_title(self, title: str) -> QuerySet:
         return Task.objects.filter(title__icontains=title)
@@ -40,8 +40,11 @@ class TaskDao:
     def get_task_by_multiple_tags(self, task: Task):
         return Task.objects.filter(tags__in=task.tags.all()).exclude(id=task.id).distinct()
 
-    # Task.objects.annotate(tag_count=Count('tags')).filter(tags__in=task.tags.all()).exclude(id=task.id).filter(
-    #     tag_count=len(task.tags.all())).distinct()
+    def get_all_tasks_by_client(self, client):
+        return Task.objects.filter(client=client).count()
+
+    def get_all_tasks_by_freelancer(self, freelancer):
+        return Task.objects.filter(assigned_to=freelancer).count()
 
 
 
