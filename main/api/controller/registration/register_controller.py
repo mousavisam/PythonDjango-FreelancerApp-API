@@ -45,9 +45,10 @@ class RegisterController(ViewSet):
                 first_name = serializer.validated_data.get('first_name', None)
                 last_name = serializer.validated_data.get('last_name', None)
                 user_type = serializer.validated_data.get('type', None)
+                referrer = serializer.validated_data.get('referrer', None)
                 self.register_logic.insert_user(username=username, password=password,
                                                 email=email, first_name=first_name,
-                                                last_name=last_name, type=user_type)
+                                                last_name=last_name, type=user_type, referrer=referrer)
                 return Response(data="You Signed Up Successfully", status=status.HTTP_201_CREATED)
 
             except Exception as e:

@@ -8,12 +8,13 @@ from ....model.user_entity import User
 
 class TaskDao:
 
-    def insert_task(self, **kwargs) -> None:
+    def insert_task(self, **kwargs) -> Task:
         tags = kwargs['tags']
         kwargs.pop('tags')
         task = Task.objects.create(**kwargs)
         task.tags.set(tags)
         task.save()
+        return task
 
     def get_task_by_id(self, task_id: int) -> Task:
         return Task.objects.filter(id=task_id).first()
@@ -35,6 +36,13 @@ class TaskDao:
 
     def get_task_by_title(self, title: str) -> QuerySet:
         return Task.objects.filter(title__icontains=title)
+
+    def get_task_by_multiple_tags(self, task: Task):
+        return Task.objects.filter(tags__in=task.tags.all()).exclude(id=task.id).distinct()
+
+    # Task.objects.annotate(tag_count=Count('tags')).filter(tags__in=task.tags.all()).exclude(id=task.id).filter(
+    #     tag_count=len(task.tags.all())).distinct()
+
 
 
 

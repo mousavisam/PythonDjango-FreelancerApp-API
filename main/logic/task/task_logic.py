@@ -24,7 +24,9 @@ class TaskLogic:
         kwargs.pop('tags')
         kwargs['tags'] = list_of_categories
         kwargs['status'] = TaskStatus.UNASSIGNED
-        self.dao.insert_task(**kwargs)
+        task = self.dao.insert_task(**kwargs)
+        related_tasks = self.get_task_by_multiple_tags(task=task)
+        return related_tasks
 
     def get_task_by_id(self, task_id: int) -> Task:
         return self.dao.get_task_by_id(task_id)
@@ -50,6 +52,9 @@ class TaskLogic:
     def get_task_by_tag(self, tag: str) -> QuerySet:
         tasks = self.dao.get_task_by_tag(tag)
         return tasks
+
+    def get_task_by_multiple_tags(self, task):
+        return self.dao.get_task_by_multiple_tags(task)
 
     def get_task_by_title(self, title: str) -> QuerySet:
         return self.dao.get_task_by_title(title=title)
