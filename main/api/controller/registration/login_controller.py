@@ -53,6 +53,8 @@ class LoginController(ViewSet):
         else:
             return ErrorResponse(message=serializer.errors, status_code=status.HTTP_400_BAD_REQUEST)
 
+
+class GetUserController(ViewSet):
     @extend_schema(
         tags=["Auth"],
         responses={200: UserSerializer},

@@ -15,14 +15,18 @@ class CreateProposalSerializer(serializers.ModelSerializer):
 
 class GetProposalSerializer(serializers.ModelSerializer):
     task = serializers.SerializerMethodField()
+    id = serializers.SerializerMethodField()
 
     class Meta:
         model = Proposal
 
-        fields = ['task', 'delivery_time_in_day', 'payment_amount', 'description',  'creation_time', 'status']
+        fields = ['task', 'delivery_time_in_day', 'payment_amount', 'description',  'creation_time', 'status', 'id']
 
     def get_task(self, obj):
         return obj.task.title
+
+    def get_id(self, obj):
+        return obj.id
 
 
 class UpdateProposalSerializer(serializers.Serializer):

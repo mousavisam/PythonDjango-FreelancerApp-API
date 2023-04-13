@@ -97,7 +97,7 @@ class TaskController(ViewSet):
     )
     def get_tasks_related_to_user_skills(self, request: Request):
         tasks = self.task_logic.get_tasks_related_to_user_skills(user=request.user)
-        serialized_response = GetTaskSerializer(tasks, many=True)
+        serialized_response = GetRelatedTaskSerializer(tasks, many=True)
         return Response(serialized_response.data, status=status.HTTP_200_OK)
 
 

@@ -12,7 +12,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('image',)
+        fields = ('personal_image',)
 
 
 class GetProfileSerializer(serializers.ModelSerializer):

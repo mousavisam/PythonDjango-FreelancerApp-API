@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # 'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
+    'chat.apps.ChatappConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -56,24 +58,19 @@ INSTALLED_APPS = [
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
-    'channels',
+    # 'channels',
 ]
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
 MIDDLEWARE = [
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -153,22 +150,30 @@ SPECTACULAR_SETTINGS = {
 }
 
 WSGI_APPLICATION = 'skill-tree.wsgi.application'
-ASGI_APPLICATION = "skill-tree.asgi.application"
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-        }
-    }
+# # Daphne
+# ASGI_APPLICATION = "skill-tree.asgi.application"
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': "channels.layers.InMemoryChannelLayer"
+#         }
+#     }
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#              "hosts": [("redis-12465.c91.us-east-1-3.ec2.cloud.redislabs.com", 12465)],
+#         },
+#     },
+# }
 
 AUTH_USER_MODEL = 'main.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-AUTHENTICATION_BACKENDS = [
-    'main.auth.UserSessionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+
 
 DATABASES = {
     'default': {
@@ -202,13 +207,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 SITE_ID = 1
 
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
@@ -240,6 +238,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = str(BASE_DIR) + '/upload/users'
 MEDIA_URL = '/upload/users/'
 
