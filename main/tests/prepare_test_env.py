@@ -1,8 +1,7 @@
-from typing import Dict
-
 from rest_framework.test import APIClient
-from django.urls import reverse
 
+from main.enum.task_status import TaskStatus
+from main.logic.category.category_logic import CategoryLogic
 from main.model.task_entity import Task
 from main.model.user_entity import User
 
@@ -22,6 +21,7 @@ class PrepareTestEnv:
         return user
 
     def create_task(self):
+        list_of_categories = list()
         data = {
             'title': 'Test Task',
             'deliver_time': '2023-04-12',
@@ -29,4 +29,13 @@ class PrepareTestEnv:
             'tags': ['python', 'php'],
             'client': User.objects.filter(username='user10').first()
         }
-        return Task.objects.create(**data)
+        for tag in data['tags']:
+            category = CategoryLogic().get_category_by_title(title=tag)
+            list_of_categories.append(category)
+        data.pop('tags')
+        data['status'] = TaskStatus.UNASSIGNED
+        task = Task.objects.create(**data)
+        task.tags.set(list_of_categories)
+        task.save()
+
+        return task

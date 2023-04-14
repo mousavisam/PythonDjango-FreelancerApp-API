@@ -38,15 +38,13 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    # 'daphne',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
-    'chat.apps.ChatappConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -58,7 +56,9 @@ INSTALLED_APPS = [
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
-    # 'channels',
+    'channels',
+    'main.apps.MainConfig',
+    'chat.apps.ChatappConfig',
 ]
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
@@ -151,8 +151,8 @@ SPECTACULAR_SETTINGS = {
 
 WSGI_APPLICATION = 'skill-tree.wsgi.application'
 
-# # Daphne
-# ASGI_APPLICATION = "skill-tree.asgi.application"
+# Daphne
+ASGI_APPLICATION = "skill-tree.asgi.application"
 
 # CHANNEL_LAYERS = {
 #     'default': {
@@ -160,14 +160,25 @@ WSGI_APPLICATION = 'skill-tree.wsgi.application'
 #         }
 #     }
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#              "hosts": [("redis-12465.c91.us-east-1-3.ec2.cloud.redislabs.com", 12465)],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+             "hosts": [f"redis://:{env('REDIS_PASSWORD')}@{env('REDIS_ENDPOINT_URL')}"],
+
+        },
+    },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": [f"redis://:{env('REDIS_PASSWORD')}@{env('REDIS_ENDPOINT_URL')}"],
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        }
+    }
+}
 
 AUTH_USER_MODEL = 'main.User'
 
@@ -238,7 +249,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = str(BASE_DIR) + '/upload/users'
 MEDIA_URL = '/upload/users/'
 
